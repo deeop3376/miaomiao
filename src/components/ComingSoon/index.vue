@@ -1,6 +1,8 @@
 <template>
     <div id="content">
         <div class="movie_body">
+			<Loading v-if="flag" />
+			<Scroller v-else>
 				<ul>
 					<!-- <li>
 						<div class="pic_show"><img src="/images/movie_1.jpg"></div>
@@ -27,6 +29,7 @@
 						</div>
 					</li>
 				</ul>
+				</Scroller>
 			</div>
     </div>
 </template>
@@ -36,14 +39,20 @@
 		name:"Cinema",
 		data(){
 			return{
-				comingList:[]
+				comingList:[],
+				flag:true,
+				prevCityId:-1
 			}
 		},
-		mounted(){
-			this.axios.get('/api/movieComingList?cityId=10').then((res)=>{
+		activated(){
+			var cityId=this.$store.state.city.id;
+			if(cityId==this.prevCityId){return;}
+			this.axios.get('/api/movieComingList?cityId='+cityId).then((res)=>{
 				var msg=res.data.msg;
 				if(msg==='ok'){
 					this.comingList=res.data.data.comingList;
+					this.flag=false;
+					this.prevCityId=cityId;
 				}
 			})
 		}
@@ -51,6 +60,7 @@
     }
 </script>
 <style scoped>
+
 #content .movie_body{ flex:1; overflow:auto;}
 .movie_body ul{ margin:0 12px; overflow: hidden;}
 .movie_body ul li{ margin-top:12px; display: flex; align-items:center; border-bottom: 1px #e6e6e6 solid; padding-bottom: 10px;}

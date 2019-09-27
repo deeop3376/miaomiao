@@ -1,6 +1,7 @@
 <template>
 <div id="content">
     <div class="cinema_body">
+		<Scroller>
 				<ul>
 					<!-- <li>
 						<div>
@@ -30,6 +31,7 @@
        					</div>
 					</li>
 				</ul>
+				</Scroller>
 			</div>
             </div>
 </template>
@@ -38,12 +40,16 @@
 	   name:'CiList',
 	   data(){
 		   return{
-			   cinemaList:[]
+			   cinemaList:[],
+			   prevCityId:-1
 		   }
 	   },
-	   mounted(){
-		   this.axios.get('/api/cinemaList?cityId=10').then((res)=>{
+	   activated(){
+		   var cityId=this.$store.state.city.id;
+		   if(cityId==this.prevCityId){return;}
+		   this.axios.get('/api/cinemaList?cityId='+cityId).then((res)=>{
 			   var msg=res.data.msg;
+			   this.prevCityId=cityId;
 			   if(msg==='ok'){
 				   this.cinemaList=res.data.data.cinemas;
 			   }
