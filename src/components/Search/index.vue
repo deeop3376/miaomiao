@@ -41,7 +41,8 @@
         data(){
 			return {
 				message:'',
-				moviesList:[]
+				moviesList:[],
+				prevCityId:-1
 			};
 		},
 		methods:{
@@ -55,10 +56,12 @@
 			message(newVal){
 				var that=this;
 				this.cancelRequest();
-
-				this.axios.get('/api/searchList?cityId=10&kw='+newVal,{
+				var cityId=this.$store.state.city.id;
+				if(cityId==this.prevCityId){return;}
+				this.axios.get('/api/searchList?cityId='+cityId+'&kw='+newVal,{
 					cancelToken : new this.axios.CancelToken(function(c){
 						that.source=c;
+						this.prevCityId=cityId;
 					})
 				}).then((res)=>{
 					var msg=res.data.msg;
