@@ -24,11 +24,11 @@
             <!-- 图片的连接是这种样式，其中w.h为宽高，需要我们自己指定。所以这种连接不能直接使用，要把其中的w.h换成宽.高http://p0.meituan.net/w.h/moviemachine/b7362f555340906684944957dfc8d5421530646.jpg"
 						下面用了一个全局过滤器setWH用来替换链接中的w.h
             -->
-            <div class="pic_show" @tap="handleToDetail">
+            <div class="pic_show" @tap="handleToDetail(item.id)">
               <img :src="item.img | setWH('128.180')" />
             </div>
             <div class="info_list">
-              <h2>
+              <h2 @tap="handleToDetail(item.id)">
                 {{item.nm}}
                 <img v-if="item.version" src="@/assets/maxs.png" alt />
               </h2>
@@ -94,8 +94,9 @@ export default {
     });
   },
   methods: {
-    handleToDetail() {
-      console.log("11111111111");
+    handleToDetail(movieId) {
+      //console.log(movieId);
+      this.$router.push('/movie/detail/1/'+movieId)
     },
     handleToScroll(pos) {
       if (pos.y > 30) {
