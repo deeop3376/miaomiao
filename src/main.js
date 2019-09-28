@@ -6,7 +6,7 @@ import axios from 'axios'
 
 Vue.prototype.axios=axios;
 Vue.config.productionTip = false
-Vue.filter('setWH',(url,arg)=>{
+Vue.filter('setWH',(url,arg)=>{//全局过滤器
   return url.replace(/w\.h/,arg);
 });
 import Scroller from '@/components/Scroller'
